@@ -3,55 +3,73 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-model Users {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
+model Categories {
+  id    Int     @id(map: "categories_pk") @default(autoincrement())
+  name  String  @unique
+  tests Tests[]
 
-  @@map("users")
-}
-
-model Terms {
-  id          Int           @id @default(autoincrement())
-  number      String        @unique
-  disciplines Disciplines[]
-
-  @@map("terms")
+  @@map("categories")
 }
 
 model Disciplines {
-  id     Int    @id @default(autoincrement())
-  name   String @unique
-  termId Int
-  term   Terms  @relation(fields: [termId], references: [id])
-
-  teachersDisciplines     TeachersDisciplines[]
-
+  id                  Int                   @id(map: "disciplines_pk") @default(autoincrement())
+  number              Int                   @unique @default(autoincrement())
+  termId              Int
+  terms               Terms                 @relation(fields: [termId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "disciplines_fk0")
+  teachersDisciplines TeachersDisciplines[]
 
   @@map("disciplines")
 }
 
 model Teachers {
-  id              Int           @id @default(autoincrement())
-  name            String        @unique
-
-  teachersDisciplines     TeachersDisciplines[]
+  id                  Int                   @id(map: "teachers_pk") @default(autoincrement())
+  name                String                @unique
+  teachersDisciplines TeachersDisciplines[]
 
   @@map("teachers")
 }
 
 model TeachersDisciplines {
-  id              Int           @id @default(autoincrement())
-  teacher         Teachers      @relation(fields: [teacherId], references: [id])       
-  teacherId       Int
-
-  discipline      Disciplines   @relation(fields: [disciplineId], references: [id])       
-  disciplineId    Int
+  id           Int         @id(map: "teachersDisciplines_pk") @default(autoincrement())
+  number       Int         @unique @default(autoincrement())
+  teacherId    Int
+  disciplineId Int
+  disciplines  Disciplines @relation(fields: [disciplineId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "teachersDisciplines_fk1")
+  teachers     Teachers    @relation(fields: [teacherId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "teachersDisciplines_fk0")
+  tests        Tests[]
 
   @@map("teachersDisciplines")
+}
+
+model Terms {
+  id          Int           @id(map: "terms_pk") @default(autoincrement())
+  number      Int           @unique @default(autoincrement())
+  disciplines Disciplines[]
+
+  @@map("terms")
+}
+
+model Tests {
+  id                  Int                 @id(map: "tests_pk") @default(autoincrement())
+  name                Int                 @unique @default(autoincrement())
+  pdfUrl              String
+  categoryId          Int
+  teacherDisciplineId Int
+  categories          Categories          @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tests_fk0")
+  teachersDisciplines TeachersDisciplines @relation(fields: [teacherDisciplineId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tests_fk1")
+
+  @@map("tests")
+}
+
+model Users {
+  id       Int    @id(map: "users_pk") @default(autoincrement())
+  email    String @unique
+  password String
+
+  @@map("users")
 }
