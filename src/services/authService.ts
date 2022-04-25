@@ -30,3 +30,11 @@ export async function signIn({ email, password }: CreateUserData) {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
     return token;
   }
+
+  export async function findById(id: number) {
+    const user = await authRepo.findById(id);
+    if (!user) throw error.notFound;
+  
+    delete user.password;
+    return user;
+  }
