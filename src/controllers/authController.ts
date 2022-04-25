@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import * as authService from "../services/authService.js";
+import { CreateUserData } from "../interfaces/index.js";
+
 
 export async function signUp(req: Request, res: Response) {
-  const user: authService.CreateUserData = req.body;
+  const user: CreateUserData = req.body;
 
   await authService.insert(user);
 
@@ -10,7 +12,7 @@ export async function signUp(req: Request, res: Response) {
 }
 
 export async function signIn(req: Request, res: Response) {
-    const user: authService.CreateUserData = req.body;
+    const user: CreateUserData = req.body;
   
     const token = await authService.signIn(user);
   

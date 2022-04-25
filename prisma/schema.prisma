@@ -18,7 +18,7 @@ model Categories {
 
 model Disciplines {
   id                  Int                   @id(map: "disciplines_pk") @default(autoincrement())
-  number              Int                   @unique @default(autoincrement())
+  name                String                @unique
   termId              Int
   terms               Terms                 @relation(fields: [termId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "disciplines_fk0")
   teachersDisciplines TeachersDisciplines[]
@@ -36,7 +36,6 @@ model Teachers {
 
 model TeachersDisciplines {
   id           Int         @id(map: "teachersDisciplines_pk") @default(autoincrement())
-  number       Int         @unique @default(autoincrement())
   teacherId    Int
   disciplineId Int
   disciplines  Disciplines @relation(fields: [disciplineId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "teachersDisciplines_fk1")
@@ -56,7 +55,7 @@ model Terms {
 
 model Tests {
   id                  Int                 @id(map: "tests_pk") @default(autoincrement())
-  name                Int                 @unique @default(autoincrement())
+  name                String              
   pdfUrl              String
   categoryId          Int
   teacherDisciplineId Int

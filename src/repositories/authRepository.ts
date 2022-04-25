@@ -1,4 +1,4 @@
-import { CreateUserData } from './../services/authService';
+import { CreateUserData } from "../interfaces/index.js";
 import prisma from "../database.js";
 
 export async function findAll() {
@@ -14,7 +14,7 @@ export async function insert(CreateUserData: CreateUserData) {
 export async function findByEmail(email: string) {
     return prisma.users.findUnique({
       where: {
-        email,
-      },
+        email
+      }
     });
 }

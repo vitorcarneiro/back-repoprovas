@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "tests" ALTER COLUMN "name" DROP DEFAULT,
+ALTER COLUMN "name" SET DATA TYPE TEXT;
+DROP SEQUENCE "tests_name_seq";
