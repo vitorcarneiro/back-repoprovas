@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import validateSchemaMiddleware from '../middlewares/validateSchemaMiddleware.js';
-import * as authSchemas from '../schemas/authSchema.js';
-import { testsByDisciplines } from '../controllers/testController.js';
+import { testsByDisciplines, testsByTeachers } from '../controllers/testController.js';
 
 const testRouter = Router();
 
 testRouter.get('/tests/disciplines', testsByDisciplines);
+testRouter.get('/tests/teachers', testsByTeachers);
 
 export default testRouter;
