@@ -6,3 +6,9 @@ export async function testsByDisciplines(req: Request, res: Response) {
 
     res.send(tests);
 }
+
+export async function testsByTeachers(req: Request, res: Response) {
+    const tests = await testService.testByTeacher();
+
+    res.send(tests);
+}
