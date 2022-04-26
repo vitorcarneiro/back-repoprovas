@@ -10,10 +10,8 @@ export async function ensureAuthenticationMiddleware(
 ) {
     const auth = req.headers['authorization'];
     if (!auth) throw unauthorized("Missing authorization header");
-    console.log('auth', auth);
     
     const token = auth.replace("Bearer ", "");
-    console.log('token', token);
     if (!token) throw unauthorized("Missing token");
 
     const { userId } = jwt.verify(token, process.env.JWT_SECRET) as {
@@ -22,8 +20,6 @@ export async function ensureAuthenticationMiddleware(
     
     const user = await authService.findById(userId);
     res.locals.user = user;
-    
-    console.log(user);
-    
+        
     next();
 }
